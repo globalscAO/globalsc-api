@@ -1,20 +1,22 @@
 services:
-  postgres:
-    image: postgres
+  mysql:
+    image: mysql
     environment:
-      POSTGRES_USER: ${DB_USERNAME:-admin}
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-admin}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-root}
+      MYSQL_DATABASE: ${DB_DATABASE:-global_services_db} 
+      MYSQL_USER: ${DB_USERNAME:-admin}       
+      MYSQL_PASSWORD: ${DB_PASSWORD:-admin}    
     ports:
-      - "5432:5432"
+      - "3306:3306"
     restart: unless-stopped
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - mysql_data:/var/lib/mysql
     networks:
-      - postgres
+      - mysql
 
 networks:
-  postgres:
+  mysql:
     driver: bridge
 
 volumes:
-  postgres_data:
+  mysql_data:

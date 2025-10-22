@@ -25,6 +25,10 @@ export class Contact {
   @Column({ type: "text" })
   message!: string;
 
-  @CreateDateColumn({ type: "timestamptz" })
+  @CreateDateColumn({
+    type: "timestamp",
+    precision: 0,
+    default: () => "CURRENT_TIMESTAMP",
+  })
   createdAt!: Date;
 }
