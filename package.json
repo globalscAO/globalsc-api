@@ -5,12 +5,10 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc",
-    "start": "yarn migration:run && node dist/server.js",
+    "start": "node dist/server.js",
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "vercel-build": "yarn build",
-    "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
-    "migration:generate": "yarn typeorm migration:generate src/migrations/InitialMigration -d src/database/datasource.ts",
-    "migration:run": "yarn typeorm migration:run -d dist/database/datasource.js"
+    "migrate": "yarn typeorm migration:run -d dist/database/datasource.js"
   },
   "dependencies": {
     "class-transformer": "^0.5.1",
