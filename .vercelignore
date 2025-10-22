@@ -1,5 +1,12 @@
+# Ignorar node_modules (Vercel instala dependências automaticamente)
 node_modules
-src
+
+# Ignorar arquivos de teste
+src/**/*.spec.ts
+src/**/*.test.ts
+
+# Ignorar variáveis de ambiente
 .env
-tsconfig.json
+
+# Ignorar arquivos temporários
 ts-node-dev
