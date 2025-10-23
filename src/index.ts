@@ -26,19 +26,19 @@ app.get("/", (req: Request, res: Response) => {
 app.use("/api", routes);
 app.use(errorMiddleware);
 
-async function ensureDataSourceInitialized() {
+async function garantirConexaoBancoDeDados() {
   if (!AppDataSource.isInitialized) {
     await AppDataSource.initialize();
-    console.log("✅ Banco de dados inicializado (lazy).");
+    console.log("Conexão com o banco de dados estabelecida (inicialização sob demanda).");
   }
 }
 
 export default async function handler(req: Request, res: Response) {
   try {
-    await ensureDataSourceInitialized();
+    await garantirConexaoBancoDeDados();
     app(req, res);
-  } catch (err) {
-    console.error("❌ Erro ao inicializar o banco:", err);
-    res.status(500).json({ error: "Erro ao conectar ao banco de dados" });
+  } catch (erro) {
+    console.error("Erro ao inicializar a conexão com o banco de dados:", erro);
+    res.status(500).json({ erro: "Falha ao conectar ao banco de dados" });
   }
 }
