@@ -6,7 +6,7 @@ dotenv.config();
 
 const isProd = process.env.NODE_ENV === "production";
 
-const AppDataSource = new DataSource({
+export const AppDataSource = new DataSource({
   type: "mysql",
   host: process.env.DB_HOST || "localhost",
   port: +(process.env.DB_PORT || 3306),
@@ -26,14 +26,18 @@ const AppDataSource = new DataSource({
   ],
 });
 
-AppDataSource.initialize()
-  .then(() => {
-    console.log(
-      `Banco de dados conectado com sucesso (${isProd ? "PRODUÇÃO" : "DEV"})`
-    );
-  })
-  .catch((err) => {
-    console.error("Erro durante a conexão:", err);
-  });
+export async function initializeDatabase() {
+  try {
+    await AppDataSource.initialize();
+    console.log(`Banco conectado (${isProd ? "PRODUÇÃO" : "DEV"})`);
 
-export default AppDataSource;
+    const pendingMigrations = await AppDataSource.showMigrations();
+    if (pendingMigrations) {
+      await AppDataSource.runMigrations();
+      console.log("Migrations executadas com sucesso.");
+    }
+  } catch (err) {
+    console.error("Erro ao inicializar o banco:", err);
+    process.exit(1);
+  }
+}
