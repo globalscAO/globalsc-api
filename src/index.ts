@@ -1,3 +1,6 @@
+
+import type { Request, Response } from "express";
+
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -7,6 +10,8 @@ import routes from "./routes";
 import { errorMiddleware } from "./middleware/error.middleware";
 
 dotenv.config();
+
+const PORT = process.env.PORT || 3000;
 
 const app = express();
 
@@ -22,8 +27,19 @@ app.use(
   })
 );
 
+app.get("/", (req: Request, res: Response) => {
+  res.json({ status: "ok", timestamp: new Date() });
+});
+
 app.use("/api", routes);
 
 app.use(errorMiddleware);
 
-export default app;
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
+
+export default function handler(req: Request, res: Response) {
+  app(req, res);
+}

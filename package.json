@@ -1,13 +1,12 @@
 {
   "name": "global-services-backend",
   "version": "1.0.0",
-  "main": "dist/server.js",
+  "main": "dist/index.js",
   "license": "MIT",
   "scripts": {
     "build": "tsc",
-    "start": "node dist/server.js",
-    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
-    "vercel-build": "yarn build",
+    "start": "node dist/index.js",
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
     "migrate": "yarn typeorm migration:run -d dist/database/datasource.js"
   },
   "dependencies": {
