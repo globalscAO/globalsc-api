@@ -1,6 +1,7 @@
 import "reflect-metadata";
 import dotenv from "dotenv";
 import { DataSource } from "typeorm";
+import path from "path";
 
 dotenv.config();
 
@@ -20,9 +21,17 @@ const AppDataSource = new DataSource({
         rejectUnauthorized: false,
       }
     : undefined,
-  entities: [isProd ? "dist/entities/*.{js,ts}" : "src/entities/*.{ts,js}"],
+  entities: [
+    path.join(
+      __dirname,
+      isProd ? "../entities/*.{js,ts}" : "./entities/*.{ts,js}"
+    ),
+  ],
   migrations: [
-    isProd ? "dist/migrations/*.{js,ts}" : "src/migrations/*.{ts,js}",
+    path.join(
+      __dirname,
+      isProd ? "../migrations/*.{js,ts}" : "./migrations/*.{ts,js}"
+    ),
   ],
 });
 
