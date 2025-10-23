@@ -7,7 +7,15 @@ dotenv.config();
 
 const isProd = process.env.NODE_ENV === "production";
 
-const AppDataSource = new DataSource({
+const entitiesPath = isProd
+  ? path.resolve(__dirname, "../entities/**/*.entity.{js,ts}")
+  : path.resolve(__dirname, "./entities/**/*.entity.{ts,js}");
+
+const migrationsPath = isProd
+  ? path.resolve(__dirname, "../migrations/**/*.{js,ts}")
+  : path.resolve(__dirname, "./migrations/**/*.{ts,js}");
+
+export const AppDataSource = new DataSource({
   type: "mysql",
   host: process.env.DB_HOST || "localhost",
   port: +(process.env.DB_PORT || 3306),
@@ -16,33 +24,18 @@ const AppDataSource = new DataSource({
   database: process.env.DB_DATABASE || "global_services_db",
   synchronize: !isProd,
   logging: !isProd,
-  ssl: isProd
-    ? {
-        rejectUnauthorized: false,
-      }
-    : undefined,
-  entities: [
-    path.join(
-      __dirname,
-      isProd ? "../entities/*.{js,ts}" : "./entities/*.{ts,js}"
-    ),
-  ],
-  migrations: [
-    path.join(
-      __dirname,
-      isProd ? "../migrations/*.{js,ts}" : "./migrations/*.{ts,js}"
-    ),
-  ],
+  ssl: isProd ? { rejectUnauthorized: false } : undefined,
+  entities: [entitiesPath],
+  migrations: [migrationsPath],
 });
 
 AppDataSource.initialize()
   .then(() => {
-    console.log(
-      `Banco de dados conectado com sucesso (${isProd ? "PRODUÇÃO" : "DEV"})`
-    );
+    console.log("✅ Banco de dados conectado com sucesso!");
+    console.log("Entidades carregadas:", AppDataSource.entityMetadatas.map(e => e.name));
   })
   .catch((err) => {
-    console.error("Erro durante a conexão:", err);
+    console.error("❌ Erro durante a conexão:", err);
   });
 
 export default AppDataSource;
