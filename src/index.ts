@@ -14,7 +14,7 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: ["http://localhost:3000", "https://globalsc-website-v2.vercel.app"],
+    origin: ["http://localhost:3000", "https://globalsc.ao"],
     credentials: true,
   })
 );
@@ -29,7 +29,9 @@ app.use(errorMiddleware);
 async function garantirConexaoBancoDeDados() {
   if (!AppDataSource.isInitialized) {
     await AppDataSource.initialize();
-    console.log("Conexão com o banco de dados estabelecida (inicialização sob demanda).");
+    console.log(
+      "Conexão com o banco de dados estabelecida (inicialização sob demanda)."
+    );
   }
 }
 
