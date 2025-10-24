@@ -37,7 +37,7 @@ export class ContactService {
     try {
       await this.resend.emails.send({
         from: "Global Services Corporation <comercial@globalsc.ao>",
-        to: ["joelpitra44@gmail.com"],
+        to: ["comercial@globalsc.ao"],
         subject: "Novo contato recebido pelo site",
         html: `
       <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f4f6f8; padding: 0;">
